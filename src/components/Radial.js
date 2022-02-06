@@ -77,7 +77,7 @@ function Radial() {
     
 
     return (
-        <svg width={width} height={height}>
+        <svg width={width} height={height} className='fill-white'>
             <g transform={`translate(${width/2},${height/2})`}>
                 {data.map((d,i)=> (
                     <g className='r axis'>
@@ -89,8 +89,8 @@ function Radial() {
 
                 {ticks.map((d,i) => (
                     <g className='a axis' transform={`rotate(${rad2deg(scale(d)) - 90})`}>
-                        {/* <line x2={chartRadius}/> */}
-                        <text className='font-bold text-gray-500' style={{textAnchor: (scale(d) >= PI && scale(d) < 2 * PI ? 'end': null)}}x={chartRadius + 10} transform={`rotate(${90 - rad2deg(scale(d))},${chartRadius+ 10},0)`}>${d}</text>
+                        <line x2={chartRadius} style={{strokeDasharray: 5}} stroke='white'/>
+                        <text className='font-bold text-gray-500' style={{textAnchor: (scale(d) >= PI && scale(d) < 2 * PI ? 'end': null)}}x={chartRadius + 10} transform={`rotate(${90 - rad2deg(scale(d))},${chartRadius+ 10},0)`}>${d}T</text>
                     </g>
                 ))}
                 {data.map((d,i) => (
