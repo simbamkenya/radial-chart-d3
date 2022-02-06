@@ -24,3 +24,14 @@ line {
   fill: none;
   stroke-width: 1;
 }
+
+.tooltip {
+  position: absolute;
+  /* display: none; */
+  background: rgba(194, 74, 74, 0.6);
+  border-radius: 3px;
+  box-shadow: -3px 3px 15px #888;
+  color: white;
+  padding: 6px;
+  z-index: 999;
+}

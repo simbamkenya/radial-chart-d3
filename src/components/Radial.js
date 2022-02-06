@@ -1,5 +1,5 @@
 import React, { useEffect, useRef} from 'react'
-import {scaleLinear, max, arc, interpolate, scaleOrdinal, schemeCategory10} from 'd3'
+import {scaleLinear, max, arc, interpolate, scaleOrdinal, schemeCategory10, select} from 'd3'
 
 
 function Radial() {
@@ -73,36 +73,58 @@ function Radial() {
     }
 
     const rad2deg = angle => angle * 180 / PI;
+    // const container = select('#radialContainer')
+    //     .style('position', 'relative')
+
+    select('#svgcontainer').style('position', 'relative')
+    const tooltip = select('.tooltip')
 
     
+    const handleMouseMove = (e,d) => {
+        tooltip.style('left', (e.pageX + 10) + 'px')
+            .style('top', (e.pageY - 25) + 'px')
+            .style('display', 'inline-block')
+            .html(`${e.name}: ${e.value}`)
+
+            console.log(e.value)
+    }
+
+    const handleMouseOut = (e, d) => {
+        tooltip.style('display', 'nonek')
+        
+    }
+
 
     return (
-        <svg width={width} height={height} className='fill-white'>
-            <g transform={`translate(${width/2},${height/2})`}>
-                {data.map((d,i)=> (
-                    <g className='r axis'>
-                        {/* <circle r={getOuterRadius(i) + arcPadding}/> */}
-                        {/* <circle r={25* i + arcPadding}/> */}
-                        <text className='font-bold text-lg' x={labelPadding} y={-getOuterRadius(i) + arcPadding}>{d.name}</text>
-                    </g>
-                ))}
+            <div id='svgcontainer'>
+                <div className='tooltip'>text ti iti: </div>
+            <svg width={width} height={height} className='fill-white'>
+                <g transform={`translate(${width/2},${height/2})`}>
+                    {data.map((d,i)=> (
+                        <g className='r axis'>
+                            {/* <circle r={getOuterRadius(i) + arcPadding}/> */}
+                            {/* <circle r={25* i + arcPadding}/> */}
+                            <text className='font-bold text-lg' x={labelPadding} y={-getOuterRadius(i) + arcPadding}>{d.name}</text>
+                        </g>
+                    ))}
 
-                {ticks.map((d,i) => (
-                    <g className='a axis' transform={`rotate(${rad2deg(scale(d)) - 90})`}>
-                        <line x2={chartRadius} style={{strokeDasharray: 5}} stroke='white'/>
-                        <text className='font-bold text-gray-500' style={{textAnchor: (scale(d) >= PI && scale(d) < 2 * PI ? 'end': null)}}x={chartRadius + 10} transform={`rotate(${90 - rad2deg(scale(d))},${chartRadius+ 10},0)`}>${d}T</text>
-                    </g>
-                ))}
-                {data.map((d,i) => (
-                    <g className='data'>
-                        {/* {console.log(arcGenerator(d))} */}
-                        <path d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: scale(d.value) })} style={{fill: color(d)}} className='arc'/>
-                        {/* {console.log(arcGenerator(d))} */}
-                        {/* {console.log(arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), endAngle: scale(d) }))} */}
-                    </g>
-                ))}
-            </g>
-        </svg>
+                    {ticks.map((d,i) => (
+                        <g className='a axis' transform={`rotate(${rad2deg(scale(d)) - 90})`}>
+                            <line x2={chartRadius} style={{strokeDasharray: 4, stroke: 'white', strokeLinecap:"round"}}/>
+                            <text className='font-bold text-gray-500' style={{textAnchor: (scale(d) >= PI && scale(d) < 2 * PI ? 'end': null)}}x={chartRadius + 10} transform={`rotate(${90 - rad2deg(scale(d))},${chartRadius+ 10},0)`}>${d} T</text>
+                        </g>
+                    ))}
+                    {data.map((d,i) => (
+                        <g className='data'>
+                            {/* {console.log(arcGenerator(d))} */}
+                            <path onMouseOut={handleMouseOut} onMouseMove={() => handleMouseMove(d)} d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: scale(d.value) })} style={{fill: color(d)}} className='arc'/>
+                            {/* {console.log(arcGenerator(d))} */}
+                            {/* {console.log(arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), endAngle: scale(d) }))} */}
+                        </g>
+                    ))}
+                </g>
+            </svg>
+        </div> 
     )
 }
 
