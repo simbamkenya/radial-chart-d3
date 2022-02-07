@@ -5,20 +5,23 @@ import Radial from './components/Radial';
 function App() {
   return (
     <div className="antialiased bg-gray-600 min-h-screen flex justify-center items-center">
-      <div className='flex px-8 py-4'>
-        <div>
+      <div className='mx-auto flex px-8 py-4'>
+        <div className=''>
           <div>
-            <h1 className='flex-none text-3xl underline text-white font-bold uppercase text-center tracking-widest space-y-4'>Trillion-Dollar Club</h1>          
-            <h1 className='text-white text-lg font-medium'>Members of Trillion Dollar Club</h1>
-            <p className='tracking-6 text-lg text-white'>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-               Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                It has survived not only five centuries, but also the leap into electronic typesetting, 
-                remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset 
-                sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like 
-                Aldus PageMaker including versions of Lorem Ipsum.</p>
-          </div>
-          <div className='flex flex-col'>
+            <div>
+              <h1 className='flex-none text-3xl underline text-white font-bold uppercase text-center tracking-widest space-y-4'>Trillion-Dollar Club</h1>          
+              <h1 className='text-white text-lg font-medium text-center underline py-3 '>Members of Trillion Dollar Club</h1>
+              <p className='tracking-6 text-lg text-white'>
+              Only a few public-traded firms have achieved $1 trillion or more in market capitalization.
+               According to data collected by “Companies Market Cap”, only four companies at the moment 
+               have reached and retained this market as of 7th February 2022. Only Saudi Aramco the oil 
+               and gas giant counts as the only non-American firm to feature on the trillion-dollar club.
+                These elite firms stand as the biggest companies around the globe.</p>
+            </div>
+
+
+            <div>
+            <div className='flex flex-col mt-8'>
           <div className='overflow-x-auto sm:-mx-6 lg:-mx-8'>
           <div className='inline-block py-2 min-w-full sm:px-6 lg:px-8'>
             <div className='overflow-hidden shadow-md sm:rounded-lg'>
@@ -57,10 +60,15 @@ function App() {
           </div>
           </div>
         </div>
+            </div>
+          </div>
+          
         </div>
 
         <div className='flex justify-center items-center'>
-        <Radial/>
+          <div className='6'>
+           <Radial/>
+          </div>
         </div>
       </div>
     </div>

@@ -24,6 +24,9 @@ line {
   fill: none;
   stroke-width: 1;
 }
+/* .a .axis > line {
+  z-index: 999;
+} */
 
 .tooltip {
   position: absolute;
