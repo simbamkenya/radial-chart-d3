@@ -6,8 +6,10 @@ function Radial() {
     const width= 650,
         height = 600,
         chartRadius = height/2 - 40;
-    const color = scaleOrdinal(schemeCategory10)
-
+    
+    const colors = ['#FFE44D', '#FFD401', '#E98C00', '#E98C00', '#E88D00', '#B8B8B8' ]
+    const color = scaleOrdinal(colors)
+    
     const data = [
         {
           name: "Apple",
