@@ -5,7 +5,7 @@ import Radial from './components/Radial';
 function App() {
   return (
     <div className="antialiased bg-gray-600 min-h-screen flex justify-center items-center">
-      <div className='mx-auto flex px-8 py-4'>
+      <div className='mx-auto lg:flex px-8 py-4'>
         <div className=''>
           <div>
             <div>
@@ -66,7 +66,7 @@ function App() {
         </div>
 
         <div className='flex justify-center items-center'>
-          <div className='6'>
+          <div className='pt-3'>
            <Radial/>
           </div>
         </div>
