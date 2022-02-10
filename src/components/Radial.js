@@ -104,20 +104,20 @@ function Radial() {
 
 
     return (
-            <div id='svgcontainer border-4 bg-red-200'>
-                <div className='tooltip font-medium text-lg px-2 py-2'>text ti iti: </div>
+            <div id='svgcontainer'>
+                <div className='tooltip font-medium text-lg px-2 py-2'>TTTTTT </div>
             <svg width={width} height={height} className='fill-white'>
                 <g transform={`translate(${width/2},${height/2})`}>
                     {data.map((d,i)=> (
                         <g className='r axis'>
                             {/* <circle r={getOuterRadius(i) + arcPadding}/> */}
                             {/* <circle r={25* i + arcPadding}/> */}
-                            <text className='font-bold text-lg' x={labelPadding} y={-getOuterRadius(i) + arcPadding}>{d.name}</text>
+                            <text key={i} className='font-bold text-lg' x={labelPadding} y={-getOuterRadius(i) + arcPadding}>{d.name}</text>
                         </g>
                     ))}
 
                     {data.map((d,i) => (
-                        <g className='data'>
+                        <g className='data' key={i}>
                             {/* {console.log(arcGenerator(d))} */}
                             
                             <path onMouseOut={handleMouseOut} onMouseMove={() => handleMouseMove(d)} d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: scale(d.value) })} style={{fill: color(d)}} className='arc'/>
@@ -128,7 +128,7 @@ function Radial() {
                     ))}
 
                     {ticks.map((d,i) => (
-                        <g className='a axis' transform={`rotate(${rad2deg(scale(d)) - 90})`}>
+                        <g key={i} className='a axis' transform={`rotate(${rad2deg(scale(d)) - 90})`}>
                             <line x2={chartRadius} style={{strokeDasharray: 4, stroke: 'white', strokeLinecap:"round", zIndex:999}}/>
                             <text className='font-bold text-gray-500' style={{textAnchor: (scale(d) >= PI && scale(d) < 2 * PI ? 'end': null)}}x={chartRadius + 10} transform={`rotate(${90 - rad2deg(scale(d))},${chartRadius+ 10},0)`}>${d} T</text>
                         </g>
