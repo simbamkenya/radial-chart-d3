@@ -54,7 +54,7 @@ function Radial() {
 
     //scale
     const scale = scaleLinear()
-     .domain([0, max(data, d => d.value) * 1.2])
+     .domain([0, max(data, d => d.value) * 1.35])
      .range([0, 2 * PI])
 
     const ticks = scale.ticks(numTicks).slice(0,-1)
@@ -119,8 +119,9 @@ function Radial() {
                     {data.map((d,i) => (
                         <g className='data' key={i}>
                             {/* {console.log(arcGenerator(d))} */}
-                            
+                            <path d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: 2 * Math.PI* 0.78 })} style={{fill: 'gray'}} className='arc'/>
                             <path onMouseOut={handleMouseOut} onMouseMove={() => handleMouseMove(d)} d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: scale(d.value) })} style={{fill: color(d)}} className='arc'/>
+                            
                             {/* <text x={chartRadius -120} transform={`rotate(${rad2deg(90 * 0.3 * i) - 90})`}>00000000</text> */}
                             {/* {console.log(arcGenerator(d))} */}
                             {/* {console.log(arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), endAngle: scale(d) }))} */}
