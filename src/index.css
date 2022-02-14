@@ -25,12 +25,10 @@ line {
 } */
 
 .tooltip {
-  position: absolute;
+  /* opacity: 1; */
+  /* top: -12px; */
+  /* left: 0; */
   /* display: none; */
   background: rgba(194, 74, 74, 0.6);
   border-radius: 3px;
-  box-shadow: -3px 3px 15px #888;
-  color: white;
-  padding: 6px;
-  z-index: 999;
 }

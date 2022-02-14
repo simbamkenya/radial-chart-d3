@@ -1,15 +1,16 @@
-import React, { useEffect, useRef} from 'react'
+import React, { useEffect, useRef, useState} from 'react'
 import {scaleLinear, max, arc, interpolate, scaleOrdinal, schemeCategory10, select} from 'd3'
 
 
 function Radial() {
+    const [toolTip, setTooltip] = useState('')
     const width= 650,
         height = 600,
         chartRadius = height/2 - 40;
-    
+
     const colors = ['#FFE44D', '#FFD401', '#E98C00', '#E98C00', '#E88D00', '#B8B8B8' ]
     const color = scaleOrdinal(colors)
-    
+
     const data = [
         {
           name: "Apple",
@@ -41,9 +42,9 @@ function Radial() {
           value: 1.598,
           country: 'USA'
         },
-        
+
       ]
-    
+
 
     // const chartArcs = useRef(chartArcs)
     const PI = Math.PI,
@@ -84,29 +85,39 @@ function Radial() {
     // const container = select('#radialContainer')
     //     .style('position', 'relative')
 
-    select('#svgcontainer').style('position', 'relativ')
+    select('#svgcontainer')
     const tooltip = select('.tooltip')
 
-    
-    const handleMouseMove = (e,d) => {
-        tooltip.style('left', (e.pageX + 10) + 'px')
-            .style('top', (e.pageY - 25) + 'px')
-            // .style('display', 'inline-block')
-            .style('z-index', 999)
-            .html(`${d.name}: $${d.value} T <br/> ${d.country}`)
 
-            console.log(e.pageX)
+    const handleMouseMove = (e,d) => {
+        const value = d.value;
+        const country = d.country;
+          setTooltip({value, country})
+        //   console.log(mousePosition)
+        // tooltip.style('left', (e.pageX + 10) + 'px')
+        //     .style('top', (e.pageY - 25) + 'px')
+
+            // .attr('class', 'font-medium absolute text-lg shadow-md text-white px-2 py-2 border-gray-200')
+            // .style('display', 'inline-block')
+            // .style('z-index', 999)
+            // .html(`${d.name}: $${d.value} T <br/> ${d.country}`)
+
+            // console.log({e})
     }
 
     const handleMouseOut = (e, d) => {
-        tooltip.style('display', 'nonek')
-        
+        tooltip.style('opacity', 1)
+
     }
 
 
     return (
-            <div id='svgcontainer'>
-                <div className='tooltip font-medium text-lg px-2 py-2'>Radial Chart</div>
+            <div id='svgcontainer' className='relative'>
+                {/* {console.log('value', toolTip.value)} */}
+               <div className='absolute inset-x-0 top-0 h-16 w-48 tooltip font-medium text-lg shadow-md text-white px-2 py-2'>
+                   <div>Value: ${toolTip.value} T</div>
+                   <div>Country: {toolTip.country}</div>
+               </div>
             <svg width={width} height={height} className='fill-white'>
                 <g transform={`translate(${width/2},${height/2})`}>
                     {data.map((d,i)=> (
@@ -122,11 +133,11 @@ function Radial() {
                             {/* {console.log(arcGenerator(d))} */}
                             <path d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: 2 * Math.PI* 0.78 })} style={{fill: 'gray'}} className='arc'/>
                             <path onMouseOut={handleMouseOut} onMouseMove={(e) => handleMouseMove(e,d)} d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: scale(d.value) })} style={{fill: color(d)}} className='arc hover:opacity-50'><title className='text-white'>{d.name}</title></path>
-                            
+
                             {/* <text x={chartRadius -120} transform={`rotate(${rad2deg(90 * 0.3 * i) - 90})`}>00000000</text> */}
                             {/* {console.log(arcGenerator(d))} */}
                             {/* {console.log(arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), endAngle: scale(d) }))} */}
-                        </g>
+                       </g>
                     ))}
 
                     {ticks.map((d,i) => (
@@ -137,7 +148,8 @@ function Radial() {
                     ))}
                 </g>
             </svg>
-        </div> 
+
+        </div>
     )
 }
 
