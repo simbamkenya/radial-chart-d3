@@ -114,7 +114,7 @@ function Radial() {
     return (
             <div id='svgcontainer' className='relative'>
                 {/* {console.log('value', toolTip.value)} */}
-               <div className='absolute inset-x-0 top-0 h-16 w-48 tooltip font-medium text-lg shadow-md text-white px-2 py-2'>
+               <div className='absolute inset-x-0 top-0 left-12 h-16 w-40 tooltip font-medium text-lg shadow-md text-white px-2 py-2'>
                    <div>Value: ${toolTip.value} T</div>
                    <div>Country: {toolTip.country}</div>
                </div>
