@@ -1,15 +1,24 @@
 import './App.css';
 import Radial from './components/Radial';
+import { gsap } from 'gsap'
+import React, { useRef, useEffect } from 'react'
 
 
 function App() {
+  const contentRef = useRef(null)
+
+  useEffect(()=>{
+        gsap.from(contentRef.current, {
+          x: -150
+        });
+  }, [])
   return (
     <div className="antialiased bg-gray-600 min-h-screen ">
       <h1 className='flex-none text-3xl underline text-white font-bold uppercase text-center tracking-widest space-y-4 py-6'>Trillion-Dollar Club</h1>
       <div className='flex justify-center items-center'>
         <div className='mx-auto lg:flex  px-8 lg:px-24 py-4'>
           <div className='lg:w-1/2  px-4'>
-            <div className='px-2'>
+            <div className='px-2' ref={contentRef}>
               <div>
                 {/* <h1 className='flex-none text-3xl underline text-white font-bold uppercase text-center tracking-widest space-y-4'>Trillion-Dollar Club</h1>           */}
                 <h1 className='text-white text-2xl font-medium text-center underline py-3 '>Members of Trillion Dollar Club</h1>

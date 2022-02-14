@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState} from 'react'
 import {scaleLinear, max, arc, interpolate, scaleOrdinal, schemeCategory10, select} from 'd3'
+import { gsap } from 'gsap'
 
 
 function Radial() {
@@ -7,6 +8,17 @@ function Radial() {
     const width= 650,
         height = 600,
         chartRadius = height/2 - 40;
+
+    const svgRef = useRef(null)
+    const contentRef = useRef(null)
+
+    useEffect(()=>{
+        gsap.from(svgRef.current, {
+            x: 150
+          });
+    }, [])
+
+    console.log(gsap)
 
     const colors = ['#FFE44D', '#FFD401', '#E98C00', '#E98C00', '#E88D00', '#B8B8B8' ]
     const color = scaleOrdinal(colors)
@@ -112,13 +124,13 @@ function Radial() {
 
 
     return (
-            <div id='svgcontainer' className='relative'>
+            <div id='svgcontainer' ref={svgRef} className='relative'>
                 {/* {console.log('value', toolTip.value)} */}
                <div className='absolute inset-x-0 top-0 left-12 h-16 w-40 tooltip font-medium text-lg shadow-md text-white px-2 py-2'>
                    <div>Value: ${toolTip.value} T</div>
                    <div>Country: {toolTip.country}</div>
                </div>
-            <svg width={width} height={height} className='fill-white'>
+            <svg  width={width} height={height} className='fill-white'>
                 <g transform={`translate(${width/2},${height/2})`}>
                     {data.map((d,i)=> (
                         <g className='r axis'>
