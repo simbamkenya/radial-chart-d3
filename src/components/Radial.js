@@ -105,7 +105,7 @@ function Radial() {
 
     return (
             <div id='svgcontainer'>
-                <div className='tooltip font-medium text-lg px-2 py-2'>TTTTTT </div>
+                <div className='tooltip font-medium text-lg px-2 py-2'>Radial Chart</div>
             <svg width={width} height={height} className='fill-white'>
                 <g transform={`translate(${width/2},${height/2})`}>
                     {data.map((d,i)=> (
@@ -120,7 +120,7 @@ function Radial() {
                         <g className='data' key={i}>
                             {/* {console.log(arcGenerator(d))} */}
                             <path d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: 2 * Math.PI* 0.78 })} style={{fill: 'gray'}} className='arc'/>
-                            <path onMouseOut={handleMouseOut} onMouseMove={() => handleMouseMove(d)} d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: scale(d.value) })} style={{fill: color(d)}} className='arc'/>
+                            <path onMouseOut={handleMouseOut} onMouseMove={() => handleMouseMove(d)} d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: scale(d.value) })} style={{fill: color(d)}} className='arc hover:opacity-50'><title className='text-white'>{d.name}</title></path>
                             
                             {/* <text x={chartRadius -120} transform={`rotate(${rad2deg(90 * 0.3 * i) - 90})`}>00000000</text> */}
                             {/* {console.log(arcGenerator(d))} */}
