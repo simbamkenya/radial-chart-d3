@@ -84,17 +84,18 @@ function Radial() {
     // const container = select('#radialContainer')
     //     .style('position', 'relative')
 
-    select('#svgcontainer').style('position', 'relative')
+    select('#svgcontainer').style('position', 'relativ')
     const tooltip = select('.tooltip')
 
     
     const handleMouseMove = (e,d) => {
         tooltip.style('left', (e.pageX + 10) + 'px')
             .style('top', (e.pageY - 25) + 'px')
-            .style('display', 'inline-block')
-            .html(`${e.name}: $${e.value} T <br/> ${e.country}`)
+            // .style('display', 'inline-block')
+            .style('z-index', 999)
+            .html(`${d.name}: $${d.value} T <br/> ${d.country}`)
 
-            console.log(e.value)
+            console.log(e.pageX)
     }
 
     const handleMouseOut = (e, d) => {
@@ -120,7 +121,7 @@ function Radial() {
                         <g className='data' key={i}>
                             {/* {console.log(arcGenerator(d))} */}
                             <path d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: 2 * Math.PI* 0.78 })} style={{fill: 'gray'}} className='arc'/>
-                            <path onMouseOut={handleMouseOut} onMouseMove={() => handleMouseMove(d)} d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: scale(d.value) })} style={{fill: color(d)}} className='arc hover:opacity-50'><title className='text-white'>{d.name}</title></path>
+                            <path onMouseOut={handleMouseOut} onMouseMove={(e) => handleMouseMove(e,d)} d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: scale(d.value) })} style={{fill: color(d)}} className='arc hover:opacity-50'><title className='text-white'>{d.name}</title></path>
                             
                             {/* <text x={chartRadius -120} transform={`rotate(${rad2deg(90 * 0.3 * i) - 90})`}>00000000</text> */}
                             {/* {console.log(arcGenerator(d))} */}
