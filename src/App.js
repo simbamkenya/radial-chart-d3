@@ -22,7 +22,7 @@ function App() {
               <div>
                 {/* <h1 className='flex-none text-3xl underline text-white font-bold uppercase text-center tracking-widest space-y-4'>Trillion-Dollar Club</h1>           */}
                 <h1 className='text-white text-2xl font-medium text-center underline py-3 '>Members of Trillion Dollar Club</h1>
-                <p className='tracking-6 text-lg text-white'>
+                <p className='tracking-6 md:text-xl text-white'>
                 Only a few public-traded firms have achieved $1 trillion or more in market capitalization.
                 According to data collected by “Companies Market Cap”, only four companies at the moment 
                 have reached and retained this market as of 7th February 2022. Only Saudi Aramco the oil 
