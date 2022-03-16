@@ -130,7 +130,7 @@ function Radial() {
                    <div>Value: ${toolTip.value} T</div>
                    <div>Country: {toolTip.country}</div>
                </div>
-            <svg  width={width} height={height} className='fill-white'>
+            <svg  width={width} height={height}  className='fill-white'>
                 <g transform={`translate(${width/2},${height/2})`}>
                     {data.map((d,i)=> (
                         <g className='r axis'>
