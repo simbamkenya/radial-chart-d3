@@ -15,7 +15,7 @@ function App() {
   return (
     <div className="antialiased bg-gray-600 min-h-screen ">
       <h1 className='flex-none text-3xl underline text-white font-bold uppercase text-center tracking-widest space-y-4 py-6'>Trillion-Dollar Club</h1>
-      <div className='container mx-auto border-8'>
+      <div className='container mx-auto'>
         <div className=''>
           <div className='px-4'>
             <div className='px-2' ref={contentRef}>
@@ -30,7 +30,7 @@ function App() {
                   These elite firms stand as the biggest companies around the globe.</p>
               </div>
 
-              <div className='border-8 flex justify-center items-center'>
+              <div className='flex justify-center items-center mt-4'>
                <Radial/>
               </div>
 

@@ -1,24 +1,44 @@
-import React, { useEffect, useRef, useState} from 'react'
+import React, { useEffect, useRef, useState, useLayoutEffect} from 'react'
 import {scaleLinear, max, arc, interpolate, scaleOrdinal, schemeCategory10, select} from 'd3'
 import { gsap } from 'gsap'
 
+const useResizeObserver = ref => {
+    const [dimensions, setDimensions] = useState({width: 400, height: 600})
+
+    useEffect(() => {
+        const observeTarget = ref.current;
+        const resizeObserver = new ResizeObserver(entries => {
+            console.log(entries)
+            entries.forEach(entry => {
+                setDimensions(entry.contentRect)
+            })
+        });
+
+        resizeObserver.observe(observeTarget)
+        return () => {
+            resizeObserver.unobserve(observeTarget)
+        };
+    }, [ref])
+
+    return dimensions;
+}
 
 function Radial() {
-    const [toolTip, setTooltip] = useState('')
-    const width= 650,
-        height = 600,
-        chartRadius = height/2 - 40;
+    const [toolTip, setTooltip] = useState('');
+    const [chartRadius, setChartRadius] = useState(260)
 
-    const svgRef = useRef(null)
-    const contentRef = useRef(null)
+    const svgRef = useRef()
+    const wrapperRef = useRef()
+    const dimensions = useResizeObserver(wrapperRef)
+    const [dms, setDms] = useState(400)
 
-    useEffect(()=>{
-        gsap.from(svgRef.current, {
-            x: 150
-          });
-    }, [])
+    useEffect(() => {
+    if(!dimensions) return;
 
-    console.log(gsap)
+     setDms(dimensions)
+     setChartRadius(dimensions.height/2 - 40)
+    }, [dimensions])
+    
 
     const colors = ['#FFE44D', '#FFD401', '#E98C00', '#E98C00', '#E88D00', '#B8B8B8' ]
     const color = scaleOrdinal(colors)
@@ -72,16 +92,12 @@ function Radial() {
 
     const ticks = scale.ticks(numTicks).slice(0,-1)
     const keys = data.map((d,i) => d.name)
-    // console.log(keys)
+    
 
     const getInnerRadius = index => (arcMinRadius + (numArcs - (index + 1)) * (arcWidth + arcPadding))
     const getOuterRadius = index => (getInnerRadius(index) + arcWidth);
 
     const arcGenerator = arc().cornerRadius(10)
-        // .innerRadius((d,i) => getInnerRadius(2))
-        // .outerRadius((d,i) => getOuterRadius(2))
-        // .startAngle(0)
-        // .endAngle((d,i) => scale(d))
 
     //number of arcs
     const numArcs = keys.length
@@ -94,72 +110,57 @@ function Radial() {
     }
 
     const rad2deg = angle => angle * 180 / PI;
-    // const container = select('#radialContainer')
-    //     .style('position', 'relative')
 
     select('#svgcontainer')
     const tooltip = select('.tooltip')
-
 
     const handleMouseMove = (e,d) => {
         const value = d.value;
         const country = d.country;
           setTooltip({value, country})
-        //   console.log(mousePosition)
-        // tooltip.style('left', (e.pageX + 10) + 'px')
-        //     .style('top', (e.pageY - 25) + 'px')
-
-            // .attr('class', 'font-medium absolute text-lg shadow-md text-white px-2 py-2 border-gray-200')
-            // .style('display', 'inline-block')
-            // .style('z-index', 999)
-            // .html(`${d.name}: $${d.value} T <br/> ${d.country}`)
-
-            // console.log({e})
     }
+
 
     const handleMouseOut = (e, d) => {
         tooltip.style('opacity', 1)
 
     }
 
-
+    // console.log(dimensions.width)
     return (
-            <div id='svgcontainer' ref={svgRef} className='relative'>
-                {/* {console.log('value', toolTip.value)} */}
+            <div id='svgcontainer' ref={svgRef} className='relative flex-1'>
                <div className='absolute inset-x-0 top-0 left-12 h-16 w-40 tooltip font-medium text-lg shadow-md text-white px-2 py-2'>
                    <div>Value: ${toolTip.value} T</div>
                    <div>Country: {toolTip.country}</div>
                </div>
-            <svg  width={width} height={height}  className='fill-white'>
-                <g transform={`translate(${width/2},${height/2})`}>
-                    {data.map((d,i)=> (
-                        <g className='r axis'>
-                            {/* <circle r={getOuterRadius(i) + arcPadding}/> */}
-                            {/* <circle r={25* i + arcPadding}/> */}
-                            <text key={i} className='font-bold text-lg' x={labelPadding} y={-getOuterRadius(i) + arcPadding}>{d.name}</text>
+
+            <div className='flex justify-center'>
+                <div ref={wrapperRef} className="flex-1 justify-center">
+                    <svg width={dimensions.width} height={dimensions.height}  ref={svgRef} className='fill-white'>
+                        <g transform={`translate(${dimensions.width/2},${dimensions.height/2})`}>
+                            {data.map((d,i)=> (
+                                <g className='r axis' key={i}>
+                                    <text key={i} className='font-bold text-lg' x={labelPadding} y={-getOuterRadius(i) + arcPadding}>{d.name}</text>
+                                </g>
+                            ))}
+
+                            {data.map((d,i) => (
+                                <g className='data' key={i}>
+                                    <path d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: 2 * Math.PI* 0.78 })} style={{fill: 'gray'}} className='arc'/>
+                                    <path onMouseOut={handleMouseOut} onMouseMove={(e) => handleMouseMove(e,d)} d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: scale(d.value) })} style={{fill: color(d)}} className='arc hover:opacity-50'><title className='text-white'>{d.name}</title></path>
+                            </g>
+                            ))}
+
+                            {ticks.map((d,i) => (
+                                <g key={i} className='a axis' transform={`rotate(${rad2deg(scale(d)) - 90})`}>
+                                    <line x2={chartRadius} style={{strokeDasharray: 4, stroke: 'white', strokeLinecap:"round", zIndex:999}}/>
+                                    <text className='font-bold text-gray-500' style={{textAnchor: (scale(d) >= PI && scale(d) < 2 * PI ? 'end': null)}}x={chartRadius + 10} transform={`rotate(${90 - rad2deg(scale(d))},${chartRadius+ 10},0)`}>${d} T</text>
+                                </g>
+                            ))}
                         </g>
-                    ))}
-
-                    {data.map((d,i) => (
-                        <g className='data' key={i}>
-                            {/* {console.log(arcGenerator(d))} */}
-                            <path d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: 2 * Math.PI* 0.78 })} style={{fill: 'gray'}} className='arc'/>
-                            <path onMouseOut={handleMouseOut} onMouseMove={(e) => handleMouseMove(e,d)} d={arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), startAngle: 0, endAngle: scale(d.value) })} style={{fill: color(d)}} className='arc hover:opacity-50'><title className='text-white'>{d.name}</title></path>
-
-                            {/* <text x={chartRadius -120} transform={`rotate(${rad2deg(90 * 0.3 * i) - 90})`}>00000000</text> */}
-                            {/* {console.log(arcGenerator(d))} */}
-                            {/* {console.log(arcGenerator({innerRadius: getInnerRadius(i), outerRadius: getOuterRadius(i), endAngle: scale(d) }))} */}
-                       </g>
-                    ))}
-
-                    {ticks.map((d,i) => (
-                        <g key={i} className='a axis' transform={`rotate(${rad2deg(scale(d)) - 90})`}>
-                            <line x2={chartRadius} style={{strokeDasharray: 4, stroke: 'white', strokeLinecap:"round", zIndex:999}}/>
-                            <text className='font-bold text-gray-500' style={{textAnchor: (scale(d) >= PI && scale(d) < 2 * PI ? 'end': null)}}x={chartRadius + 10} transform={`rotate(${90 - rad2deg(scale(d))},${chartRadius+ 10},0)`}>${d} T</text>
-                        </g>
-                    ))}
-                </g>
-            </svg>
+                    </svg>
+                </div>
+            </div>
 
         </div>
     )
