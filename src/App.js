@@ -30,7 +30,7 @@ function App() {
                   These elite firms stand as the biggest companies around the globe.</p>
               </div>
 
-              <div className='flex justify-center items-center mt-4'>
+              <div className='mt-4'>
                <Radial/>
               </div>
 

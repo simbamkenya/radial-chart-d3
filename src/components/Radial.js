@@ -117,19 +117,22 @@ function Radial() {
     const handleMouseMove = (e,d) => {
         const value = d.value;
         const country = d.country;
-          setTooltip({value, country})
+          setTooltip({value, country}) 
+        tooltip.style('top', e.clientY + 'px')
+        tooltip.style('left', e.clientX + 'px')
     }
 
 
     const handleMouseOut = (e, d) => {
         tooltip.style('opacity', 1)
+      
 
     }
 
     // console.log(dimensions.width)
     return (
-            <div id='svgcontainer' ref={svgRef} className='relative flex-1'>
-               <div className='absolute inset-x-0 top-0 left-12 h-16 w-40 tooltip font-medium text-lg shadow-md text-white px-2 py-2'>
+            <div id='svgcontainer' ref={svgRef} className='relative'>
+               <div className='absolute  tooltip font-medium text-lg shadow-md text-white px-2 py-2 z'>
                    <div>Value: ${toolTip.value} T</div>
                    <div>Country: {toolTip.country}</div>
                </div>
